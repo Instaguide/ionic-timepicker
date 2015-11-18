@@ -18,6 +18,14 @@
   padding-top: 5px;
 }
 
+
+.dayBoxText {
+  height: 40px;
+  text-align: center;
+  font-size: 16px;
+  padding-top: 12px;
+}
+
 .overflowShow {
   white-space: normal !important;
 }

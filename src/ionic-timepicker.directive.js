@@ -34,6 +34,38 @@
         scope.time = {hours: 0, minutes: 0, meridian: ""};
         var objDate = new Date(obj.epochTime * 1000);       // Epoch time in milliseconds.
 
+
+        var dayStep = 0;
+        scope.day = 'Today';
+        scope.dateMoment = moment().startOf('day');
+        scope.nextDay = function() {
+          console.log('next day');
+          dayStep += 1;
+          setDayString(dayStep, scope);
+        };
+
+        scope.prevDay = function() {
+          console.log('prev day');
+          if (dayStep !== 0) {
+            dayStep -= 1;
+          }
+          setDayString(dayStep, scope);
+        };
+
+        function setDayString (dayStep, scope) {
+          var date = new Date(Date.now() + dayStep * 24 * 60 * 60 * 1000);
+          var dateMoment = moment(date).startOf('day');
+          scope.day = dateMoment.format("ddd, DD MMM");
+          scope.dateMoment = dateMoment;
+
+          //specially call out Today and Tomorrow
+          if (dayStep === 0) {
+            scope.day = 'Today';
+          } else if (dayStep === 1) {
+            scope.day = 'Tomorrow';
+          }
+        }
+
         //Increasing the hours
         scope.increaseHours = function () {
           scope.time.hours = Number(scope.time.hours);
@@ -138,7 +170,9 @@
                       totalSec += 43200;
                     }
                     scope.etime = totalSec;
-                    scope.inputObj.callback(scope.etime);
+                    var chosenDateTimeMoment = scope.dateMoment.add(totalSec, 'seconds');
+                    console.log('Chosen date is: ' + chosenDateTimeMoment.format("dddd, MMMM Do YYYY, h:mm:ss a"));
+                    scope.inputObj.callback(scope.etime, chosenDateTimeMoment.valueOf()); //send epoch millis as second arg
                   }
                 }
               ]
