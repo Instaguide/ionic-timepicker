@@ -1,7 +1,7 @@
 <div class="12HourTimePickerChildDiv">
     <div class="row">
       <span class="col col-25">
-          <button type="button" class="button button-clear button-small button-dark timePickerArrows marginBottom10"
+          <button ng-disabled="disabledPrevDay" type="button" style="" class="button button-clear button-small button-dark timePickerArrows marginBottom10"
                   ng-click="prevDay()">
               <i class="icon ion-chevron-left"></i>
           </button>
@@ -10,7 +10,7 @@
           {{day}}
       </span>
       <span class="col col-25">
-          <button type="button" class="button button-clear button-small button-dark timePickerArrows marginBottom10"
+          <button ng-disabled="disabledNextDay" type="button" class="button button-clear button-small button-dark timePickerArrows marginBottom10"
                   ng-click="nextDay()">
               <i class="icon ion-chevron-right"></i>
           </button>
