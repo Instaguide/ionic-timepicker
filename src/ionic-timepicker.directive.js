@@ -29,15 +29,13 @@
         scope.closeLabel = scope.inputObj.closeLabel ? scope.inputObj.closeLabel : 'Close';
         scope.setButtonType = scope.inputObj.setButtonType ? scope.inputObj.setButtonType : 'button-positive';
         scope.closeButtonType = scope.inputObj.closeButtonType ? scope.inputObj.closeButtonType : 'button-stable';
-        scope.allowUptoNextInDays = scope.inputObj.allowUptoNextInDays ? scope.inputObj.allowUptoNextInDays : 0;
+        scope.allowUptoNextInDays = scope.inputObj.allowUptoNextInDays ? scope.inputObj.allowUptoNextInDays : 1;
 
         var obj = {epochTime: scope.inputEpochTime, step: scope.step, format: scope.format};
         scope.time = {hours: 0, minutes: 0, meridian: ""};
         var objDate = new Date(obj.epochTime * 1000);       // Epoch time in milliseconds.
 
         var dayStep = 0;
-        scope.disabledPrevDay = true;
-        scope.disabledNextDay = dayStep === scope.allowUptoNextInDays;
         scope.day = 'Today';
         scope.dateMoment = moment().startOf('day');
         scope.nextDay = function() {
@@ -45,12 +43,7 @@
             console.log('next day');
             dayStep += 1;
             setDayString(dayStep, scope);
-            scope.disabledPrevDay = false;
-            if (dayStep === scope.allowUptoNextInDays) {
-              scope.disabledNextDay = true;
-            }
           } else {
-            scope.disabledNextDay = true;
             console.log('dayStep is greater than or equal to allowUptoNextInDays, dayStep: ' + dayStep + ', allowUptoNextInDays: ' + scope.allowUptoNextInDays);
           }
         };
@@ -59,18 +52,11 @@
           console.log('prev day');
           if (dayStep !== 0) {
             dayStep -= 1;
-            scope.disabledNextDay = false;
-            if (dayStep === 0) {
-              scope.disabledPrevDay = true;
-            }
-          } else {
-            scope.disabledPrevDay = true;
           }
           setDayString(dayStep, scope);
         };
 
         function setDayString (dayStep, scope) {
-          //var date = new Date(Date.now() + dayStep * 24 * 60 * 60 * 1000);
           var dateMoment = moment(Date.now()).add(dayStep, 'days').startOf('day');
           scope.day = dateMoment.format("ddd, DD MMM");
           scope.dateMoment = dateMoment;
@@ -190,8 +176,7 @@
                     chosenDateTimeMoment = chosenDateTimeMoment.add(totalSec, 'seconds');
                     scope.etime = chosenDateTimeMoment;
                     console.log('Chosen date is: ' + chosenDateTimeMoment.format("dddd, MMMM Do YYYY, h:mm:ss a"));
-                    scope.selectedDateTime = chosenDateTimeMoment;
-                    scope.inputObj.callback(scope.etime, scope.selectedDateTime); //send epoch millis as second arg
+                    scope.inputObj.callback(scope.etime);
                   }
                 }
               ]
